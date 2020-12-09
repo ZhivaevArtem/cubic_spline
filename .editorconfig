@@ -1,0 +1,26 @@
+# .editorconfig
+
+root = true
+
+[**]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+charset = utf-8
+
+[**.py]
+max_line_length = 120
+ij_python_align_multiline_imports = true
+ij_python_align_multiline_parameters = true
+ij_python_align_multiline_parameters_in_calls = true
+ij_python_align_collections_and_comprehensions = true
+
+[**.{cmd,bat,sh}]
+max_line_length = off
+indent_style = tab
+indent_size = 8
+
+[**.{cmd,bat}]
+end_of_line = crlf
