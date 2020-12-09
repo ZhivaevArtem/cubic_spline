@@ -1,5 +1,9 @@
 @echo off
 
+python.exe -m pip install -r requirements.txt -qqq
+
 cd src
 
-py interpolation
+python.exe -m interpolation
+
+cd ..
