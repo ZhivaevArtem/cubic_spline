@@ -13,18 +13,14 @@ class PlotWidget(QWidget):
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
-        self.button = QPushButton('Plot')
-        self.button.clicked.connect(self.build)
         layout = QVBoxLayout()
         layout.addWidget(self.toolbar)
         layout.addWidget(self.canvas)
-        layout.addWidget(self.button)
         self.setLayout(layout)
+        print(parent)
 
-    def build(self):
+    def build(self, x, y):
         self.figure.clear()
         ax = self.figure.add_subplot(111)
-        x = np.arange(0, 5, 0.1)
-        y = np.sin(x)
         ax.plot(x, y)
         self.canvas.draw()
