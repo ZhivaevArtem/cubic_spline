@@ -17,10 +17,15 @@ ij_python_align_multiline_parameters = true
 ij_python_align_multiline_parameters_in_calls = true
 ij_python_align_collections_and_comprehensions = true
 
-[**.{cmd,bat,sh}]
+[**.{cmd, bat, sh}]
 max_line_length = off
 indent_style = tab
 indent_size = 8
 
-[**.{cmd,bat}]
+[**.{cmd, bat}]
 end_of_line = crlf
+
+[**.md]
+max_line_length = off
+indent_style = space
+indent_size = 4
