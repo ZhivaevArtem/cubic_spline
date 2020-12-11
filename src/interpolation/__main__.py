@@ -26,21 +26,28 @@ def build_plot():
     s1 = float(ui.lineEdit_s1.text())
     s2 = float(ui.lineEdit_s2.text())
 
+    xdpi = (xmax - xmin) / 250
     x = np.arange(xmin, xmax + xstep, xstep)
     x1 = x[:]
     y1 = eval(formula)
     print(x1)
     print(y1)
-    ui.widget_plot.build(x1, y1)
+
+    x = np.arange(xmin, xmax + xdpi, xdpi)
+    x3 = x[:]
+    y3 = eval(formula)
+
+    # ui.widget_plot.build(x1, y1)
 
     cubic_spline = build_cubic_spline(x1, y1, (s1, s2))
 
-    xdpi = (cubic_spline.x_consts[-1] - cubic_spline.x_consts[0]) / 100
+    xdpi = (cubic_spline.x_consts[-1] - cubic_spline.x_consts[0]) / 250
     x2 = np.arange(cubic_spline.x_consts[0], cubic_spline.x_consts[-1] + xdpi, xdpi)
     y2 = cubic_spline.calculate_all(x2)
 
     ui.widget_plot.clear()
     ui.widget_plot.build(x2, y2)
+    ui.widget_plot.build(x3, y3)
 
 
 if __name__ == "__main__":
