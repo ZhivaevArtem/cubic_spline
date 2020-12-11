@@ -19,8 +19,10 @@ class PlotWidget(QWidget):
         self.setLayout(layout)
         print(parent)
 
-    def build(self, x, y):
+    def clear(self):
         self.figure.clear()
-        ax = self.figure.add_subplot(111)
+
+    def build(self, x, y):
+        ax = self.figure.add_subplot()
         ax.plot(x, y)
         self.canvas.draw()

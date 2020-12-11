@@ -3,6 +3,7 @@ from PyQt5.QtCore import QRunnable, QThread
 from .ui.mainwindow import Ui_MainWindow
 from PyQt5 import QtWidgets
 import matplotlib as plt
+from .spline import build_cubic_spline
 
 
 plt.use('QT5Agg')
@@ -19,11 +20,27 @@ def build_plot():
                        power, mod,
                        sqrt, cbrt, square, absolute, sign, maximum, minimum, fmax, fmin)
     formula = ui.lineEdit_formula.text()
-    x = np.arange(float(ui.lineEdit_xmin.text()),
-                  float(ui.lineEdit_xmax.text()),
-                  float(ui.lineEdit_xdpi.text()))
-    y = eval(formula)
-    ui.widget_plot.build(x, y)
+    xmin = float(ui.lineEdit_xmin.text())
+    xmax = float(ui.lineEdit_xmax.text())
+    xstep = float(ui.lineEdit_xstep.text())
+    s1 = float(ui.lineEdit_s1.text())
+    s2 = float(ui.lineEdit_s2.text())
+
+    x = np.arange(xmin, xmax + xstep, xstep)
+    x1 = x[:]
+    y1 = eval(formula)
+    print(x1)
+    print(y1)
+    ui.widget_plot.build(x1, y1)
+
+    cubic_spline = build_cubic_spline(x1, y1, (s1, s2))
+
+    xdpi = (cubic_spline.x_consts[-1] - cubic_spline.x_consts[0]) / 100
+    x2 = np.arange(cubic_spline.x_consts[0], cubic_spline.x_consts[-1] + xdpi, xdpi)
+    y2 = cubic_spline.calculate_all(x2)
+
+    ui.widget_plot.clear()
+    ui.widget_plot.build(x2, y2)
 
 
 if __name__ == "__main__":
