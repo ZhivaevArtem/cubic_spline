@@ -33,7 +33,7 @@ class CubicSpline:
         for i in range(1, len(self.x_consts)):
             if self.x_consts[i - 1] <= x <= self.x_consts[i]:
                 return i - 1
-        return None
+        return len(self.x_consts) - 2
 
 def build_cubic_spline(x, y, start):
     assert len(x) == len(y)
