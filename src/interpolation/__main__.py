@@ -1,6 +1,4 @@
-from PyQt5.QtCore import QRunnable, QThread
-
-from .ui.mainwindow import Ui_MainWindow
+from .ui import Ui_MainWindow
 from PyQt5 import QtWidgets
 import matplotlib as plt
 from .spline import build_cubic_spline
@@ -20,11 +18,11 @@ def build_plot():
                        power, mod,
                        sqrt, cbrt, square, absolute, sign, maximum, minimum, fmax, fmin)
     formula = ui.lineEdit_formula.text()
-    xmin = float(ui.lineEdit_xmin.text())
-    xmax = float(ui.lineEdit_xmax.text())
-    xstep = float(ui.lineEdit_xstep.text())
-    s1 = float(ui.lineEdit_s1.text())
-    s2 = float(ui.lineEdit_s2.text())
+    xmin = eval(ui.lineEdit_xmin.text())
+    xmax = eval(ui.lineEdit_xmax.text())
+    xstep = eval(ui.lineEdit_xstep.text())
+    s1 = eval(ui.lineEdit_s1.text())
+    s2 = eval(ui.lineEdit_s2.text())
 
     pieces = 500
 
@@ -36,17 +34,26 @@ def build_plot():
     print(y1)
 
     x = np.arange(xmin, xmax + xdpi, xdpi)
-    x3 = x[:]
+    x3 = x
     y3 = eval(formula)
 
     # ui.widget_plot.build(x1, y1)
 
     cubic_spline = build_cubic_spline(x1, y1, (s1, s2))
 
-    xdpi = (cubic_spline.x_consts[-1] - cubic_spline.x_consts[0]) / pieces
-    x2 = np.arange(cubic_spline.x_consts[0], cubic_spline.x_consts[-1] + xdpi, xdpi)
+    x2 = x
     y2 = cubic_spline.calculate_all(x2)
 
+    max_difference = 0
+    md_x = 0
+    for i in range(len(x)):
+        if absolute(y2[i] - y3[i]) > max_difference:
+            max_difference = absolute(y2[i] - y3[i])
+            md_x = x[i]
+
+    ui.label_maxDifference.setText(f'max difference: {max_difference} (x = {md_x})')
+
+    print(f'max difference: {max_difference}')
     ui.widget_plot.clear()
     ui.widget_plot.build(x2, y2)
     ui.widget_plot.build(x3, y3)
